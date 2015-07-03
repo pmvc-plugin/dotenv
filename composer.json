@@ -3,7 +3,7 @@
     "description": "PMVC Plugin For phpdotenv",
     "type": "library",
     "homepage": "https://github.com/pmvc-plugin/dotenv",
-    "keywords": ["phpdotenv", "pmvc",  "plug-in"],
+    "keywords": ["dotenv", "pmvc",  "plug-in"],
     "license": "MIT",
     "authors": [
         {
