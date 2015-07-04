@@ -10,11 +10,24 @@ ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.'\dotenv';
 
 class dotenv extends \PMVC\PlugIn
 {
+    public function init()
+    {
+        $key = 'envfile';
+        if ($this->get($key)) {
+            $this->toPMVC($this->get($key));
+        }
+    }
+
     public function toPMVC($file)
     {
         $configs = (new dot($file))
             ->parse()
             ->toArray();
-        \PMVC\option('set', $configs);
+        foreach ($configs as $k=>$v) {
+            if (defined($k)) {
+                $k = constant($k);
+            }
+            \PMVC\option('set', $k, $v);
+        }
     }
 }
