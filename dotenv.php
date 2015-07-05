@@ -13,8 +13,8 @@ class dotenv extends \PMVC\PlugIn
     public function init()
     {
         $key = 'envfile';
-        if ($this->get($key)) {
-            $this->toPMVC($this->get($key));
+        if ($this[$key]) {
+            $this->toPMVC($this[$key]);
         }
     }
 
