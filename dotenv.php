@@ -18,7 +18,7 @@ class dotenv extends \PMVC\PlugIn
         }
     }
 
-    public function toPMVC($file)
+    public function toPMVC($file,$prefix='')
     {
         $configs = (new dot($file))
             ->parse()
@@ -27,6 +27,7 @@ class dotenv extends \PMVC\PlugIn
             if (defined($k)) {
                 $k = constant($k);
             }
+            $k = $prefix.$k;
             \PMVC\option('set', $k, $v);
         }
     }

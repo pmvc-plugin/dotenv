@@ -9,7 +9,7 @@ class DotEnvTest extends PHPUnit_Framework_TestCase
         # load dot file
         PMVC\plug('dotenv')->toPMVC('./.env.example');
         $expected = 'bbb';
-        $actual = getenv('aaa');
+        $actual = \PMVC\getoption('aaa');
         $this->assertEquals($expected,$actual);
     }
 }
