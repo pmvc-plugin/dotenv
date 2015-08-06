@@ -12,7 +12,7 @@
         }
     ],
     "require": {
-        "pmvc/pmvc": "*",
+        "pmvc/pmvc": "0.1.13",
         "josegonzalez/dotenv": "*"
     },
     "minimum-stability": "dev"
