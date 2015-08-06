@@ -1,6 +1,6 @@
 <?php
 PMVC\Load::plug();
-PMVC\setPlugInFolder('../');
+PMVC\addPlugInFolder('../');
 
 class DotEnvTest extends PHPUnit_Framework_TestCase
 {
