@@ -10,25 +10,37 @@ ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.'\dotenv';
 
 class dotenv extends \PMVC\PlugIn
 {
+    const EnvFile = 'envFile';
+    const EnvFolder = 'envFolder';
     public function init()
     {
-        $key = 'envfile';
-        if ($this[$key]) {
-            $this->toPMVC($this[$key]);
+        if ($this[self::EnvFile]) {
+            $file = \PMVC\realpath($this[self::EnvFile]);
+            if (!$this[self::EnvFolder] && $file) {
+                $this[self::EnvFolder] = dirname($file); 
+            }
+            $this->toPMVC($file);
         }
     }
 
     public function toPMVC($file,$prefix='')
     {
-        $configs = (new dot($file))
-            ->parse()
-            ->toArray();
-        foreach ($configs as $k=>$v) {
+        foreach ($this->getArray($file) as $k=>$v) {
             if (defined($k)) {
                 $k = constant($k);
             }
             $k = $prefix.$k;
             \PMVC\option('set', $k, $v);
         }
+    }
+    
+    public function getArray($file)
+    {
+        if (!\PMVC\realpath($file)) {
+            $file = \PMVC\lastSlash($this[self::EnvFolder]).$file;
+        }
+        return (new dot($file))
+            ->parse()
+            ->toArray();
     }
 }
