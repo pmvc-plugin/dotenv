@@ -8,16 +8,17 @@ use josegonzalez\Dotenv\Loader as dot;
 
 ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.'\dotenv';
 
+const EnvFile = 'envFile';
+const EnvFolder = 'envFolder';
+
 class dotenv extends \PMVC\PlugIn
 {
-    const EnvFile = 'envFile';
-    const EnvFolder = 'envFolder';
     public function init()
     {
-        if ($this[self::EnvFile]) {
-            $file = \PMVC\realpath($this[self::EnvFile]);
-            if (!$this[self::EnvFolder] && $file) {
-                $this[self::EnvFolder] = dirname($file); 
+        if ($this[EnvFile]) {
+            $file = \PMVC\realpath($this[EnvFile]);
+            if (!$this[EnvFolder] && $file) {
+                $this[EnvFolder] = dirname($file); 
             }
             $this->toPMVC($file);
         }
@@ -37,7 +38,7 @@ class dotenv extends \PMVC\PlugIn
     public function getArray($file)
     {
         if (!\PMVC\realpath($file)) {
-            $file = \PMVC\lastSlash($this[self::EnvFolder]).$file;
+            $file = \PMVC\lastSlash($this[EnvFolder]).$file;
         }
         return (new dot($file))
             ->parse()
