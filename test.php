@@ -12,6 +12,14 @@ class DotEnvTest extends PHPUnit_Framework_TestCase
         $actual = \PMVC\getoption('aaa');
         $this->assertEquals($expected,$actual);
     }
+    function testGetUnderscoreToArray()
+    {
+        # load dot file
+        $actual = PMVC\plug('dotenv')->getUnderscoreToArray('./.env.example');
+        $expected = 'ddd';
+        $actual = $actual['AAA']['BBB']['CCC'];
+        $this->assertEquals($expected,$actual);
+    }
 }
 
 
