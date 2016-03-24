@@ -38,7 +38,7 @@ class dotenv extends \PMVC\PlugIn
     public function getUnderscoreToArray($file)
     {
         $arr = $this->getArray($file);
-        return \PMVC\plug('underscore')->array()->toArray($arr);
+        return \PMVC\plug('underscore')->underscore()->toArray($arr);
     }
     
     public function getArray($file)
