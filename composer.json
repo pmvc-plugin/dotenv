@@ -2,7 +2,7 @@
     "name": "pmvc-plugin/dotenv",
     "description": "PMVC Plugin For phpdotenv",
     "type": "library",
-    "homepage": "https://github.com/pmvc-plugin/dotenv",
+    "homepage": "https://github.com/pmvc/pmvc",
     "keywords": ["dotenv", "pmvc",  "plug-in"],
     "license": "MIT",
     "authors": [
@@ -14,7 +14,7 @@
     "require": {
         "pmvc/pmvc": "*",
         "pmvc-plugin/underscore": "*",
-        "josegonzalez/dotenv": "*"
+        "m1/env": "*"
     },
     "minimum-stability": "dev"
 }
