@@ -15,13 +15,18 @@ class dotenv extends \PMVC\PlugIn
 {
     public function init()
     {
-        if ($this[EnvFile]) {
-            $file = \PMVC\realpath($this[EnvFile]);
-            if (!$this[EnvFolder] && $file) {
-                $this[EnvFolder] = dirname($file); 
-            }
-            $this->toPMVC($file);
+        if (isset($this[EnvFile])) {
+            $this->initEnvFile();
+        } 
+    }
+
+    public function initEnvFile()
+    {
+        $file = \PMVC\realpath($this[EnvFile]);
+        if (!$this[EnvFolder] && $file) {
+            $this[EnvFolder] = dirname($file); 
         }
+        $this->toPMVC($file);
     }
 
     public function toPMVC($file,$prefix='')
