@@ -8,25 +8,31 @@ use M1\Env\Parser;
 
 ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.'\dotenv';
 
-const EnvFolder = 'envFolder';
+const ENV_FILE = 'envFile';
+const ENV_FOLDER = 'envFolder';
 
 /**
- * @parameters string _env_file_ Global constent _ENV_FILE
+ * @parameters string envFile
+ * @parameters string envFolder
  */
 class dotenv extends \PMVC\PlugIn
 {
     public function init()
     {
-        if (isset($this[_ENV_FILE])) {
+        if (isset($this[0])) {
+            $this[ENV_FILE] = $this[0];
+            unset($this[0]);
+        }
+        if (isset($this[ENV_FILE])) {
             $this->initEnvFile();
         } 
     }
 
     public function initEnvFile()
     {
-        $file = \PMVC\realpath($this[_ENV_FILE]);
-        if (!$this[EnvFolder] && $file) {
-            $this[EnvFolder] = dirname($file); 
+        $file = \PMVC\realpath($this[ENV_FILE]);
+        if (!$this[ENV_FOLDER] && $file) {
+            $this[ENV_FOLDER] = dirname($file); 
         }
         $this->toPMVC($file);
     }
@@ -51,7 +57,7 @@ class dotenv extends \PMVC\PlugIn
     public function getArray($file)
     {
         if (!\PMVC\realpath($file)) {
-            $file = \PMVC\lastSlash($this[EnvFolder]).$file;
+            $file = \PMVC\lastSlash($this[ENV_FOLDER]).$file;
         }
         return Parser::parse(file_get_contents($file));
     }
