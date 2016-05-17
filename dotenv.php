@@ -8,21 +8,23 @@ use M1\Env\Parser;
 
 ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.'\dotenv';
 
-const EnvFile = 'envFile';
 const EnvFolder = 'envFolder';
 
+/**
+ * @parameters string _env_file_ Global constent _ENV_FILE
+ */
 class dotenv extends \PMVC\PlugIn
 {
     public function init()
     {
-        if (isset($this[EnvFile])) {
+        if (isset($this[_ENV_FILE])) {
             $this->initEnvFile();
         } 
     }
 
     public function initEnvFile()
     {
-        $file = \PMVC\realpath($this[EnvFile]);
+        $file = \PMVC\realpath($this[_ENV_FILE]);
         if (!$this[EnvFolder] && $file) {
             $this[EnvFolder] = dirname($file); 
         }
