@@ -4,8 +4,6 @@
  */
 namespace PMVC\PlugIn\dotenv;
 
-use M1\Env\Parser;
-
 ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.'\dotenv';
 
 const ENV_FILE = 'envFile';
@@ -59,6 +57,6 @@ class dotenv extends \PMVC\PlugIn
         if (!\PMVC\realpath($file)) {
             $file = \PMVC\lastSlash($this[ENV_FOLDER]).$file;
         }
-        return Parser::parse(file_get_contents($file));
+        return parse_ini_string(file_get_contents($file), true);
     }
 }
