@@ -30,7 +30,7 @@ class dotenv extends \PMVC\PlugIn
     {
         $file = \PMVC\realpath($this[ENV_FILE]);
         if (!$this[ENV_FOLDER] && $file) {
-            $this[ENV_FOLDER] = dirname($file); 
+            $this[ENV_FOLDER] = \PMVC\lastSlash(dirname($file));
         }
         $this->toPMVC($file);
     }
@@ -51,11 +51,16 @@ class dotenv extends \PMVC\PlugIn
         $arr = $this->getArray($file);
         return \PMVC\plug('underscore')->underscore()->toArray($arr);
     }
+
+    public function fileExists($file)
+    {
+        return \PMVC\realpath($this[ENV_FOLDER].$file);
+    }
     
     public function getArray($file)
     {
         if (!\PMVC\realpath($file)) {
-            $file = \PMVC\lastSlash($this[ENV_FOLDER]).$file;
+            $file = $this[ENV_FOLDER].$file;
         }
         return parse_ini_string(file_get_contents($file), true);
     }
