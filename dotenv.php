@@ -30,7 +30,7 @@ class dotenv extends \PMVC\PlugIn
     {
         $file = \PMVC\realpath($this[ENV_FILE]);
         if (!$this[ENV_FOLDER] && $file) {
-            $this[ENV_FOLDER] = \PMVC\lastSlash(dirname($file));
+            $this[ENV_FOLDER] = dirname($file);
         }
         $this->toPMVC($file);
     }
@@ -60,8 +60,8 @@ class dotenv extends \PMVC\PlugIn
     public function getArray($file)
     {
         if (!\PMVC\realpath($file)) {
-            $file = $this[ENV_FOLDER].$file;
+            $file = \PMVC\lastSlash($this[ENV_FOLDER]).$file;
         }
-        return parse_ini_string(file_get_contents($file), true);
+        return parse_ini_string(file_get_contents($file), false);
     }
 }
