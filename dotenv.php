@@ -10,8 +10,8 @@ const ENV_FILE = 'envFile';
 const ENV_FOLDER = 'envFolder';
 
 /**
- * @parameters string envFile
- * @parameters string envFolder
+ * @parameters string envFile ENV_FILE
+ * @parameters string envFolder ENV_FOLDER
  */
 class dotenv extends \PMVC\PlugIn
 {
@@ -54,13 +54,13 @@ class dotenv extends \PMVC\PlugIn
 
     public function fileExists($file)
     {
-        return \PMVC\realpath($this[ENV_FOLDER].$file);
+        return \PMVC\realpath(\PMVC\lastSlash($this[ENV_FOLDER]).$file);
     }
     
     public function getArray($file)
     {
         if (!\PMVC\realpath($file)) {
-            $file = \PMVC\lastSlash($this[ENV_FOLDER]).$file;
+            $file = $this->fileExists($file);
         }
         return parse_ini_string(file_get_contents($file), false);
     }
