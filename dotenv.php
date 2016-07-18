@@ -29,7 +29,13 @@ class dotenv extends \PMVC\PlugIn
     public function initEnvFile()
     {
         $file = \PMVC\realpath($this[ENV_FILE]);
-        if (!$this[ENV_FOLDER] && $file) {
+        if (!$file) {
+            return !trigger_error(
+                '[DotEnv:init] File not found. ['.$this[ENV_FILE].']',
+                E_USER_WARNING
+            );
+        }
+        if (!$this[ENV_FOLDER]) {
             $this[ENV_FOLDER] = dirname($file);
         }
         $this->toPMVC($file);
