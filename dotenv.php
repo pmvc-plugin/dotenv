@@ -43,7 +43,11 @@ class dotenv extends \PMVC\PlugIn
 
     public function toPMVC($file,$prefix='')
     {
-        foreach ($this->getArray($file) as $k=>$v) {
+        $arr = $this->getArray($file);
+        if (!is_array($arr)) {
+            return false;
+        }
+        foreach ($arr as $k=>$v) {
             if (defined($k)) {
                 $k = constant($k);
             }
@@ -55,6 +59,9 @@ class dotenv extends \PMVC\PlugIn
     public function getUnderscoreToArray($file)
     {
         $arr = $this->getArray($file);
+        if (!is_array($arr)) {
+            return false;
+        }
         return \PMVC\plug('underscore')->underscore()->toArray($arr);
     }
 
@@ -65,8 +72,15 @@ class dotenv extends \PMVC\PlugIn
     
     public function getArray($file)
     {
+        $useFile = $file;
         if (!\PMVC\realpath($file)) {
             $file = $this->fileExists($file);
+        }
+        if (!$file) {
+            return !trigger_error(
+                '[DotEnv:getArray] File not found. ['.$useFile.']',
+                E_USER_WARNING
+            );
         }
         return parse_ini_string(file_get_contents($file), false);
     }
