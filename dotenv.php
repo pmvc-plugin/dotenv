@@ -1,7 +1,4 @@
 <?php
-/**
- * wrapper https://packagist.org/packages/josegonzalez/dotenv
- */
 namespace PMVC\PlugIn\dotenv;
 
 ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.'\dotenv';
