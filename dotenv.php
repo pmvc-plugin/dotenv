@@ -25,14 +25,14 @@ class dotenv extends \PMVC\PlugIn
 
     public function initEnvFile()
     {
-        $file = \PMVC\realpath($this[ENV_FILE]);
+        $file = $this->fileExists($this[ENV_FILE]);
         if (!$file) {
             return !trigger_error(
                 '[DotEnv:init] File not found. ['.$this[ENV_FILE].']',
                 E_USER_WARNING
             );
         }
-        if (!$this[ENV_FOLDER]) {
+        if (empty($this[ENV_FOLDER])) {
             $this[ENV_FOLDER] = dirname($file);
         }
         $this->toPMVC($file);
@@ -64,21 +64,26 @@ class dotenv extends \PMVC\PlugIn
 
     public function fileExists($file)
     {
-        return \PMVC\realpath(\PMVC\lastSlash($this[ENV_FOLDER]).$file);
+        $realPath = \PMVC\realpath($file);
+        if ($realPath) {
+            return $realPath;
+        } 
+        $realPath = \PMVC\realpath(\PMVC\lastSlash($this[ENV_FOLDER]).$file);
+        if ($realPath) {
+            return $realPath;
+        } 
+        return false;
     }
     
     public function getArray($file)
     {
-        $useFile = $file;
-        if (!\PMVC\realpath($file)) {
-            $file = $this->fileExists($file);
-        }
-        if (!$file) {
+        $realPath = $this->fileExists($file);
+        if (!$realPath) {
             return !trigger_error(
-                '[DotEnv:getArray] File not found. ['.$useFile.']',
+                '[DotEnv:getArray] File not found. ['.$file.']',
                 E_USER_WARNING
             );
         }
-        return parse_ini_string(file_get_contents($file), false);
+        return parse_ini_string(file_get_contents($realPath), false);
     }
 }
