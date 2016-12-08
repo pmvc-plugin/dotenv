@@ -17,7 +17,9 @@
 ## Reserved special characters
    * Characters ?{}|&~![()^" must not be used anywhere in the key and have a special meaning in the value.
    * http://php.net/manual/en/function.parse-ini-string.php
-
+```
+?{}|&~![()^"
+```
 
 
 ## Install with Composer
