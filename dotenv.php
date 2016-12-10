@@ -21,6 +21,9 @@ class dotenv extends \PMVC\PlugIn
         if (isset($this[ENV_FILE])) {
             $this->initEnvFile();
         } 
+        if (empty($this[ENV_FOLDER]) && is_callable('\PMVC\getAppsParent')) {
+            $this[ENV_FOLDER] = \PMVC\getAppsParent();
+        }
     }
 
     public function initEnvFile()
