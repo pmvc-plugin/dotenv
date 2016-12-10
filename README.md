@@ -7,6 +7,21 @@
 # PMVC Dot Env plugin 
 ===============
 
+## Comment
+   * Need use ;
+   * http://php.net/manual/en/function.parse-ini-file.php#refsect1-function.parse-ini-file-examples
+```
+; This is a sample configuration file
+; Comments start with ';', as in php.ini
+```
+## Reserved special characters
+   * Characters ?{}|&~![()^" must not be used anywhere in the key and have a special meaning in the value.
+   * http://php.net/manual/en/function.parse-ini-string.php
+```
+?{}|&~![()^"
+```
+
+
 ## Install with Composer
 ### 1. Download composer
    * mkdir test_folder
