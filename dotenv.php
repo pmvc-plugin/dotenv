@@ -50,7 +50,7 @@ class dotenv extends \PMVC\PlugIn
             return false;
         }
         if (isset($arr['_'])) {
-            $this->processConstantArray($arr);
+            $this->_processConstantArray($arr);
         }
         \PMVC\option('set', $arr);
     }
@@ -60,7 +60,7 @@ class dotenv extends \PMVC\PlugIn
      * replace to
      * constant('_VIEW_ENGINE') = 'react'
      */
-    public function processConstantArray(&$arr)
+    private function _processConstantArray(&$arr)
     {
         $_ = \PMVC\plug('underscore')
             ->array()
@@ -73,6 +73,12 @@ class dotenv extends \PMVC\PlugIn
             }
             $arr[$k] = $v;
         }
+        return $arr;
+    }
+
+    public function processConstantArray($arr)
+    {
+        return $this->_processConstantArray($arr);
     }
 
     public function getUnderscoreToArray($file)
