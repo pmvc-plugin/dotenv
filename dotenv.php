@@ -5,10 +5,12 @@ ${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.'\dotenv';
 
 const ENV_FILE = 'envFile';
 const ENV_FOLDER = 'envFolder';
+const ESCAPE = 'escape'; 
 
 /**
  * @parameters string envFile ENV_FILE
  * @parameters string envFolder ENV_FOLDER
+ * @parameters string escape if key start with escape will bypass underscore 
  */
 class dotenv extends \PMVC\PlugIn
 {
@@ -43,16 +45,33 @@ class dotenv extends \PMVC\PlugIn
 
     public function toPMVC($file,$prefix='')
     {
-        $arr = $this->getArray($file);
+        $arr = $this->getUnderscoreToArray($file);
         if (!is_array($arr)) {
             return false;
         }
-        foreach ($arr as $k=>$v) {
+        if (isset($arr['_'])) {
+            $this->processConstantArray($arr);
+        }
+        \PMVC\option('set', $arr);
+    }
+
+    /**
+     * __VIEW_ENGINE='react'
+     * replace to
+     * constant('_VIEW_ENGINE') = 'react'
+     */
+    public function processConstantArray(&$arr)
+    {
+        $_ = \PMVC\plug('underscore')
+            ->array()
+            ->toUnderscore($arr['_']);
+        unset($arr['_']);
+        foreach ($_ as $k=>$v) {
+            $k = substr($k,1);
             if (defined($k)) {
                 $k = constant($k);
             }
-            $k = $prefix.$k;
-            \PMVC\option('set', $k, $v);
+            $arr[$k] = $v;
         }
     }
 
@@ -62,7 +81,9 @@ class dotenv extends \PMVC\PlugIn
         if (!is_array($arr)) {
             return false;
         }
-        return \PMVC\plug('underscore')->underscore()->toArray($arr);
+        return \PMVC\plug('underscore')
+            ->underscore()
+            ->toArray($arr, $this[ESCAPE]);
     }
 
     public function fileExists($file)
