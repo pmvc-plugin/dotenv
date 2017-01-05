@@ -9,13 +9,24 @@ PMVC\addPlugInFolders(['../']);
 
 class DotEnvTest extends PHPUnit_Framework_TestCase
 {
+
+    private $_plug = 'dotenv';
+
+    function setup()
+    {
+        \PMVC\unplug($this->_plug);
+    }
+
     function testToPMVC()
     {
         # load dot file
-        PMVC\plug('dotenv')->toPMVC('./.env.example');
+        $p = PMVC\plug($this->_plug, ['./.env.example']);
         $expected = 'bbb';
         $actual = \PMVC\getoption('aaa');
-        $this->assertEquals($expected,$actual, "Simple Test");
+        // base test
+        $this->assertEquals($expected, $actual, "Simple Test");
+        $this->assertEquals(realpath('./'), $p[ENV_FOLDER], "Test env folder");
+
         // test constent
         $this->assertEquals('fake_view', \PMVC\getoption(_VIEW_ENGINE), "Constent");
         $this->assertEquals('--"bar"--', \PMVC\getoption('foo'), "Escape double quote with single quote");
@@ -26,12 +37,19 @@ class DotEnvTest extends PHPUnit_Framework_TestCase
     function testGetUnderscoreToArray()
     {
         # load dot file
-        $actual = PMVC\plug('dotenv', [ESCAPE=>'\\'])
+        $actual = PMVC\plug($this->_plug, [ESCAPE=>'\\'])
             ->getUnderscoreToArray('./.env.example');
         $expected = 'ddd';
         $this->assertEquals($expected,$actual['AAA']['BBB']['CCC']);
         $expected = 'eee';
         $this->assertEquals($expected,$actual['AAA_BBB_CCC']);
+    }
+
+    function testGetFolderWithParamZero()
+    {
+        $p = PMVC\plug($this->_plug, ['./']);
+        $this->assertEquals(realpath('./'), $p[ENV_FOLDER]);
+        $this->assertTrue(empty($p[ENV_FILE]));
     }
 
 }
