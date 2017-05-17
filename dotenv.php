@@ -32,6 +32,9 @@ class dotenv extends \PMVC\PlugIn
     {
         $path = $this->fileExists($this[ENV_FILE]);
         if (!$path) {
+            if ($this['bypass']) {
+                return;
+            }
             return !trigger_error(
                 '[DotEnv:init] File not found. ['.$this[ENV_FILE].']',
                 E_USER_WARNING
