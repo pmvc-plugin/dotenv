@@ -117,13 +117,18 @@ class dotenv extends \PMVC\PlugIn
     
     public function getArray($file)
     {
-        $realPath = $this->fileExists($file);
-        if (!$realPath) {
-            return !trigger_error(
-                '[DotEnv:getArray] File not found. ['.$file.']',
-                E_USER_WARNING
-            );
+        if (is_string($file)) {
+            $realPath = $this->fileExists($file);
+            if (!$realPath) {
+                return !trigger_error(
+                    '[DotEnv:getArray] File not found. ['.$file.']',
+                    E_USER_WARNING
+                );
+            }
+            $content = file_get_contents($realPath);
+        } else {
+            $content = $file->raw;
         }
-        return parse_ini_string(file_get_contents($realPath), false);
+        return parse_ini_string($content, false);
     }
 }
