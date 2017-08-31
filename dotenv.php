@@ -131,6 +131,8 @@ class dotenv extends \PMVC\PlugIn
         } else {
             $content = null;
         }
-        return parse_ini_string($content, false);
+        if ($content) {
+            return parse_ini_string($content, false);
+        }
     }
 }
