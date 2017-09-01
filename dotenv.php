@@ -126,13 +126,15 @@ class dotenv extends \PMVC\PlugIn
                 );
             }
             $content = file_get_contents($realPath);
-        } elseif (!empty($file)) {
+        } elseif (is_object($file) && isset($file->raw)) {
             $content = $file->raw;
         } else {
             $content = null;
         }
         if ($content) {
             return parse_ini_string($content, false);
+        } else {
+            return [];
         }
     }
 }

@@ -51,7 +51,13 @@ class DotEnvTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(realpath('./'), $p[ENV_FOLDER]);
         $this->assertTrue(empty($p[ENV_FILE]));
     }
-
+    
+    function testGetEmptyArray()
+    {
+        $p = PMVC\plug($this->_plug);
+        $arr = $p->getArray(null);
+        $this->assertTrue(is_array($arr));
+    }
 }
 
 
