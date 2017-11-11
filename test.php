@@ -29,6 +29,7 @@ class DotEnvTest extends PHPUnit_Framework_TestCase
 
         // test constent
         $this->assertEquals('fake_view', \PMVC\getoption(_VIEW_ENGINE), "Constent");
+        $this->assertEquals('not_constant', \PMVC\getoption('_not_constant'), "Constent not found");
         $this->assertEquals('--"bar"--', \PMVC\getoption('foo'), "Escape double quote with single quote");
         $this->assertEquals('--"bar"--', \PMVC\getoption('foo1'), "Escape double quote with slash");
         $this->assertEquals('--bar--', \PMVC\getoption('foo2'), "Without escape double quot");

@@ -77,9 +77,10 @@ class dotenv extends \PMVC\PlugIn
             ->toUnderscore($arr['_']);
         unset($arr['_']);
         foreach ($_ as $k=>$v) {
-            $k = substr($k,1);
             if (defined($k)) {
                 $k = constant($k);
+            } else {
+                $k = '_'.$k;
             }
             $arr[$k] = $v;
         }
