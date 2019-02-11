@@ -26,7 +26,7 @@ class dotenv extends \PMVC\PlugIn
         if (empty($this[ENV_FOLDER]) && \PMVC\exists('controller', 'plug')) {
             $this[ENV_FOLDER] = 
                 \PMVC\plug('controller')->
-                get_apps_parent();
+                getAppsParent();
         }
     }
 
