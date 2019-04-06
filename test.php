@@ -46,6 +46,14 @@ class DotEnvTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected,$actual['AAA_BBB_CCC']);
     }
 
+    public function testGetDash()
+    {
+        $actual = PMVC\plug($this->_plug)
+            ->getUnderscoreToArray('./.env.example');
+        $expected = 'test dash';
+        $this->assertEquals($expected,$actual['foo-bar']);
+    }
+
     function testGetFolderWithParamZero()
     {
         $p = PMVC\plug($this->_plug, ['./']);
