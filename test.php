@@ -35,6 +35,12 @@ class DotEnvTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('--bar--', \PMVC\getoption('foo2'), "Without escape double quot");
     }
 
+    function testToPMVCWithDirName()
+    {
+        $p = PMVC\plug($this->_plug, ['./.env.example']);
+        $this->assertEquals(\PMVC\realPath("./").'/test', \PMVC\getoption('foo3'));
+    }
+
     function testGetUnderscoreToArray()
     {
         # load dot file
