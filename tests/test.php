@@ -2,17 +2,14 @@
 namespace PMVC\PlugIn\dotenv;
 
 use PMVC;
-use PHPUnit_Framework_TestCase;
+use PMVC\TestCase;
 
-PMVC\Load::plug();
-PMVC\addPlugInFolders(['../']);
-
-class DotEnvTest extends PHPUnit_Framework_TestCase
+class DotEnvTest extends TestCase
 {
 
     private $_plug = 'dotenv';
 
-    function setup()
+    function pmvc_setup()
     {
         \PMVC\unplug($this->_plug);
     }

@@ -15,5 +15,8 @@
         "pmvc/pmvc": "*",
         "pmvc-plugin/underscore": "*"
     },
+    "require-dev": {
+        "pmvc-plugin/unit": "*"
+    },
     "minimum-stability": "dev"
 }

@@ -1,16 +1,16 @@
 <?php
 namespace PMVC\PlugIn\dotenv;
 
-${_INIT_CONFIG}[_CLASS] = __NAMESPACE__.'\dotenv';
+${_INIT_CONFIG}[_CLASS] = __NAMESPACE__ . '\dotenv';
 
 const ENV_FILE = 'envFile';
 const ENV_FOLDER = 'envFolder';
-const ESCAPE = 'escape'; 
+const ESCAPE = 'escape';
 
 /**
  * @parameters string envFile ENV_FILE
  * @parameters string envFolder ENV_FOLDER
- * @parameters string escape if key start with escape will bypass underscore 
+ * @parameters string escape if key start with escape will bypass underscore
  */
 class dotenv extends \PMVC\PlugIn
 {
@@ -22,11 +22,9 @@ class dotenv extends \PMVC\PlugIn
         }
         if (isset($this[ENV_FILE])) {
             $this->initEnvFile();
-        } 
+        }
         if (empty($this[ENV_FOLDER]) && \PMVC\exists('controller', 'plug')) {
-            $this[ENV_FOLDER] = 
-                \PMVC\plug('controller')->
-                getAppsParent();
+            $this[ENV_FOLDER] = \PMVC\plug('controller')->getAppsParent();
         }
     }
 
@@ -38,7 +36,7 @@ class dotenv extends \PMVC\PlugIn
                 return;
             }
             return !trigger_error(
-                '[DotEnv:init] File not found. ['.$this[ENV_FILE].']',
+                '[DotEnv:init] File not found. [' . $this[ENV_FILE] . ']',
                 E_USER_WARNING
             );
         }
@@ -57,21 +55,28 @@ class dotenv extends \PMVC\PlugIn
 
     public function replace(&$arr, $replaces, $cb)
     {
-      array_walk_recursive($arr, function(&$item, $key) use ($replaces, $cb){
-        foreach ($replaces as $replaceKey) {
-          if (false === strpos($item, '['.$replaceKey.']')) {
-            continue;
-          }
-          $item = str_replace(
-            '['.$replaceKey.']',
-            $cb(["item"=>$item, "itemKey"=>$key, "replaceKey"=>$replaceKey]),
-            $item
-          );
-        }
-      });
+        array_walk_recursive($arr, function (&$item, $key) use (
+            $replaces,
+            $cb
+        ) {
+            foreach ($replaces as $replaceKey) {
+                if (false === strpos($item, '[' . $replaceKey . ']')) {
+                    continue;
+                }
+                $item = str_replace(
+                    '[' . $replaceKey . ']',
+                    $cb([
+                        'item' => $item,
+                        'itemKey' => $key,
+                        'replaceKey' => $replaceKey,
+                    ]),
+                    $item
+                );
+            }
+        });
     }
 
-    public function toPMVC($file,$prefix='')
+    public function toPMVC($file, $prefix = '')
     {
         $arr = $this->getUnderscoreToArray($file);
         if (!is_array($arr)) {
@@ -80,11 +85,17 @@ class dotenv extends \PMVC\PlugIn
         if (isset($arr['_'])) {
             $this->_processConstantArray($arr);
         }
-        $to = ["__DIR__"=>dirname(\PMVC\realpath($file))];
-        $this->replace($arr, ["__DIR__"], function($payload) use($to) {
-          return \PMVC\get($to, $payload["replaceKey"]);
+        $to = ['__DIR__' => dirname(\PMVC\realpath($file))];
+        $this->replace($arr, ['__DIR__'], function ($payload) use ($to) {
+            return \PMVC\get($to, $payload['replaceKey']);
         });
-        \PMVC\option('set', $arr);
+        foreach ($arr as $k => $v) {
+            $old = \PMVC\getOption($k);
+            if (!empty($old) && is_array($old) && is_array($v)) {
+                $v = array_merge_recursive($old, $v);
+            }
+            \PMVC\option('set', $k, $v);
+        }
     }
 
     /**
@@ -98,11 +109,11 @@ class dotenv extends \PMVC\PlugIn
             ->array()
             ->toUnderscore($arr['_']);
         unset($arr['_']);
-        foreach ($_ as $k=>$v) {
+        foreach ($_ as $k => $v) {
             if (defined($k)) {
                 $k = constant($k);
             } else {
-                $k = '_'.$k;
+                $k = '_' . $k;
             }
             $arr[$k] = $v;
         }
@@ -130,21 +141,21 @@ class dotenv extends \PMVC\PlugIn
         $realPath = \PMVC\realpath($file);
         if ($realPath) {
             return $realPath;
-        } 
-        $realPath = \PMVC\realpath(\PMVC\lastSlash($this[ENV_FOLDER]).$file);
+        }
+        $realPath = \PMVC\realpath(\PMVC\lastSlash($this[ENV_FOLDER]) . $file);
         if ($realPath) {
             return $realPath;
-        } 
+        }
         return false;
     }
-    
+
     public function getArray($file)
     {
         if (is_string($file)) {
             $realPath = $this->fileExists($file);
             if (!$realPath) {
                 return !trigger_error(
-                    '[DotEnv:getArray] File not found. ['.$file.']',
+                    '[DotEnv:getArray] File not found. [' . $file . ']',
                     E_USER_WARNING
                 );
             }
