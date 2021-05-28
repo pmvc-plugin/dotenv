@@ -59,20 +59,7 @@ class dotenv extends \PMVC\PlugIn
             $replaces,
             $cb
         ) {
-            foreach ($replaces as $replaceKey) {
-                if (false === strpos($item, '[' . $replaceKey . ']')) {
-                    continue;
-                }
-                $item = str_replace(
-                    '[' . $replaceKey . ']',
-                    $cb([
-                        'item' => $item,
-                        'itemKey' => $key,
-                        'replaceKey' => $replaceKey,
-                    ]),
-                    $item
-                );
-            }
+            $item = \PMVC\tpl($item, $replaces, $cb); 
         });
     }
 
