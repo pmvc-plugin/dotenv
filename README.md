@@ -23,6 +23,7 @@
 
 
 ## Install with Composer
+<details><summary>CLICK TO SEE</summary><p>
 ### 1. Download composer
    * mkdir test_folder
    * curl -sS https://getcomposer.org/installer | php
@@ -42,3 +43,8 @@
 #### 2.2 Or use composer command-line
    * php composer.phar require pmvc-plugin/dotenv
 
+   or
+   
+   * composer require pmvc-plugin/dotenv
+
+</p></details>
